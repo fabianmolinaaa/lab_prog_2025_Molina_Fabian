@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-image: url("../../../../lab_prog_2025_Molina_Fabian/public/app/assets/images/travis-fondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+main {
+    padding: 20px;
+}
+
+#seccion-principal {
+    color: #fff;
+    height: 400px;
+}
