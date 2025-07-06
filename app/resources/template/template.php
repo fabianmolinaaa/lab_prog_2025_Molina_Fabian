@@ -14,7 +14,7 @@
         //* Scripts
         if(isset($this->scripts) && is_array($this->scripts)){
             foreach($this->scripts as $script){
-                echo '<script defer src="' . APP_URL . $script . '"></script>';
+                echo '<script type="module" src="' . APP_URL . $script . '"></script>';
             }
         }
     ?>
@@ -35,5 +35,10 @@
             require_once APP_DIR_TEMPLATE . "includes/footer.php";
         ?>
     </footer> -->
+    <!-- Modal -->
+        <?php
+            require_once APP_DIR_TEMPLATE . "includes/modal.php";
+        ?>
+    <!-- Fin Modal -->
 </body>
 </html>
