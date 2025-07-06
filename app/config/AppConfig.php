@@ -29,4 +29,4 @@ const APP_LOGIN_ACTION = "login";
 //* MANEJO DE SESIONES
 //*#########################################
 
-const APP_TOKEN = '$2y$10$I/YVeyxK2NQuJVPq.JqVCOELQXl1b.lhPMjr09RgbhKHGgW0Vwxou';
+const APP_TOKEN = "SECRET_PASSWORD";

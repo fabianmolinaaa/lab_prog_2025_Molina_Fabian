@@ -4,7 +4,6 @@ import { showModal } from "../components/modal.js";
 export const controller = {
     login: (account, password) => {
         const dataAccount = { account, password }
-
         service.login(dataAccount)
             .then(response => {
                 if (response.error === "" && response.message === "OK") {

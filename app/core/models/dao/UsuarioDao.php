@@ -10,8 +10,9 @@ final class UsuarioDao extends BaseDao implements InterfaceDao{
     public function __construct(\PDO $connection){
         parent::__construct($connection, "usuarios");
     }
-
-    public function login($cuenta): array{
+    
+    //* Autenticación del usuario el cual deberia ir en AuthenticationService
+    /* public function login($cuenta): array{
         $sql = "SELECT id, apellido, nombres, cuenta, perfil, clave, correo, estado, resetPass";
         $sql .= " FROM usuarios";
         $sql .= " WHERE (cuenta = :cuenta OR correo = :cuenta)";
@@ -22,7 +23,7 @@ final class UsuarioDao extends BaseDao implements InterfaceDao{
             throw new \Exception("El nombre de usuario o la contraseña no coinciden");
         }
         return $stmt->fetch(\PDO::FETCH_ASSOC);
-    }
+    } */
 
     public function load(int $id): array{
         return[];
