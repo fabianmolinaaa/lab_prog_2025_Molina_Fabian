@@ -13,12 +13,6 @@
  */
  interface InterfaceDao{
 
-    /**
-     * Devuelve un objeto, con los datos del correspondiente registro en base de datos.
-     * @param int $id Identificador del registro a cargar, desde la base de datos.
-     * @return array Retorna un arreglo con los datos del registro en la base de datos.
-     * @throws Exception Retona una excepción en caso de error, o no encontrarse el registro buscado.
-     */
     public function load(int $id): array;
 
     /**

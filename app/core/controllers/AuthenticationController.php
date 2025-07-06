@@ -3,7 +3,6 @@
 namespace app\core\controllers;
 
 use app\core\controllers\base\BaseController;
-use app\core\controllers\base\InterfaceController;
 use app\core\models\dto\LoginDto;
 use app\core\services\AuthenticationService;
 use app\libs\http\Request;
@@ -20,7 +19,7 @@ final class AuthenticationController extends BaseController{
     }
 
     public function login(Request $request, Response $response): void{
-        $dto = new LoginDTO($request->getDataFromInput());
+        $dto = new LoginDto($request->getDataFromInput());
         $service = new AuthenticationService();
         $service->login($dto);
         $response->setMessage("OK");

@@ -12,7 +12,7 @@ final class UsuarioDao extends BaseDao implements InterfaceDao{
     }
 
     public function login($cuenta): array{
-        $sql = "SELECT id, apellido, nombres, cuenta, clave, perfil, estado, resetPass";
+        $sql = "SELECT id, apellido, nombres, cuenta, perfil, clave, correo, estado, resetPass";
         $sql .= " FROM usuarios";
         $sql .= " WHERE (cuenta = :cuenta OR correo = :cuenta)";
 
