@@ -57,8 +57,8 @@ final class ItemController extends BaseController implements InterfaceController
 
     public function list(Request $request, Response $response): void{
         $service = new ItemService();
-        $dto = $service->list($request->getDataFromInput());
-        $response->setResult($dto);
+        $data = $service->list();
+        $response->setResult($data);
         $response->send();
     }
 

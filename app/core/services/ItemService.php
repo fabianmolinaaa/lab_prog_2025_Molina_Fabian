@@ -32,9 +32,8 @@ final class ItemService implements InterfaceService{
         $dao->delete($dto->getId());
     }
 
-    public function list(array $filters): array{
-        $dao = new ItemDao(Connection::get());
-        return $dao->list($filters);
+    public function list(): array{
+        return $this->getDao()->list();
     }
 
     private function validate(ItemDto $dto): void{
