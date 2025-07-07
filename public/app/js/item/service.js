@@ -1,12 +1,4 @@
-const items = [
-    {id: 1, name: "Shakira", code: "e001", description: "Shakira se presenta en vivo", category: "presencial", price: 120000.00, stock: 1500},
-    {id: 2, name: "Feid", code: "e002", description: "Feid se presenta en vivo", category: "presencial", price: 100000.00, stock: 1300},
-    {id: 3, name: "Maluma", code: "e003", description: "Maluma se presenta en vivo", category: "presencial", price: 110000.00, stock: 1400},
-    {id: 4, name: "J balvin", code: "e004", description: "J balvin se presenta en vivo", category: "presencial", price: 130000.00, stock: 1500},
-    {id: 5, name: "Karol G", code: "e005", description: "Karol G se presenta en vivo", category: "presencial", price: 140000.00, stock: 1600},
-    {id: 6, name: "El Doctor", code: "e006", description: "El Doctor se presenta en vivo", category: "online", price: 7000.00, stock: 150},
-];
-
+const API_BASE_URL = "item/";
 //* Exportar el servicio
 export const itemService = {
     //* Devuelve el item que se corresponda con el identificador
@@ -56,6 +48,25 @@ export const itemService = {
     },
     //* Devuelve todos los items
     list: () => {
-        return items;
+        return fetch(`${API_BASE_URL}list`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            return data;
+        })
+        .catch(error => {
+            console.error("Error al mostrar items:", error);
+            throw error;
+        });
     }
 }

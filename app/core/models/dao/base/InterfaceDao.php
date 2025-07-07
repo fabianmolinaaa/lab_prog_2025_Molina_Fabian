@@ -6,6 +6,8 @@
 
  namespace app\core\models\dao\base;
 
+ use app\core\models\dto\base\InterfaceDto;
+
  /**
  * Descripción de la clase InterfaceDao
  *
@@ -13,19 +15,19 @@
  */
  interface InterfaceDao{
 
-    public function load(int $id): array;
+    public function load(int $id): InterfaceDto;
 
     /**
      * Guarda los datos del objeto pasado como parámetro, como un nuevo registro en la base de datos.
      * @param array $data Arreglo con datos a guardarse como un nuevo registro en la base de datos.
      */
-    public function save(array $data): void;
+    public function save(InterfaceDto $object): void;
 
     /**
      * Actualiza los datos de un registro existente.
      * @param array $data Arreglo con datos a actualizar en su correspondiente registro en base de  datos.
      */
-    public function update(array $data): void;
+    public function update(interfaceDto $object): void;
 
     /**
      * Elimina de la base de datos un registro.
