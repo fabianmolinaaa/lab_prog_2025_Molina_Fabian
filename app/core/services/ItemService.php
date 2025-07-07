@@ -33,7 +33,8 @@ final class ItemService implements InterfaceService{
     }
 
     public function list(): array{
-        return $this->getDao()->list();
+        $dao = new ItemDao(Connection::get());
+        return $dao->list();
     }
 
     private function validate(ItemDto $dto): void{

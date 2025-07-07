@@ -10,11 +10,11 @@ const updateTable = (items) => {
         items.forEach(item => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${item.code}</td>    
-                <td>${item.name}</td>
-                <td>${item.description}</td>
-                <td>${item.category}</td>
-                <td>${item.price}</td>
+                <td>${item.codigo}</td>    
+                <td>${item.nombre}</td>
+                <td>${item.descripcion}</td>
+                <td>${item.nombreCategoria}</td>
+                <td>${item.precio}</td>
                 <td>${item.stock}</td>
                 <td>
                     <button type="button" class="btn btn-sm btn-primary" data-id="${item.id}">Editar</button>
@@ -35,7 +35,7 @@ const assignBtnEvents = () => {
     btnEditarItem.forEach(btn => {
         btn.addEventListener("click", (e) => {
             e.preventDefault();
-            window.location.href = "/lab_prog_2025_Molina_Fabian/public/item/edit/" + e.target.dataset.id;
+            window.location.href = "item/edit/" + e.target.dataset.id;
         });
     });
 
@@ -184,8 +184,14 @@ export const itemController = {
         }
     },
     //* Solicita al servicio las cuentas existentes y las muestra en la vista
-    list: () => {
-        updateTable(itemService.list());
+    list: async () => {
+        try {
+            const items = await itemService.list();
+            updateTable(items);
+        } catch (error) {
+            console.error("Error al mostrar items:", error);
+            throw error;
+        }
     },
     //* Genera un archivo PDF
     exportToPDF: () => {

@@ -1,4 +1,5 @@
-const API_BASE_URL = "item/";
+const API_BASE_URL = "item/"; 
+
 //* Exportar el servicio
 export const itemService = {
     //* Devuelve el item que se corresponda con el identificador
@@ -51,21 +52,20 @@ export const itemService = {
         return fetch(`${API_BASE_URL}list`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error(response.status);
+                throw new Error("Error al mostrar items");
             }
             return response.json();
         })
         .then(data => {
-            return data;
+            return data.result;
         })
         .catch(error => {
-            console.error("Error al mostrar items:", error);
+            console.error("Error en la petición", error);
             throw error;
         });
     }
