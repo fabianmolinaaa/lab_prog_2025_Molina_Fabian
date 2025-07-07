@@ -3,7 +3,6 @@
 namespace app\core\controllers;
 
 use app\core\controllers\base\BaseController;
-use app\core\models\dto\LoginDto;
 use app\core\services\AuthenticationService;
 use app\libs\http\Request;
 use app\libs\http\Response;
@@ -19,11 +18,16 @@ final class AuthenticationController extends BaseController{
     }
 
     public function login(Request $request, Response $response): void{
-        $dto = new LoginDto($request->getDataFromInput());
-        $service = new AuthenticationService();
-        $service->login($dto);
-        $response->setMessage("OK");
-        $response->send();
+        try {
+            $data = $request->getDataFromInput();
+            $service = new AuthenticationService();
+            $service->login($data);
+            $response->setMessage("OK");
+            $response->send();
+        } catch (\Exception $e) {
+            $response->setMessage("Error sistema => " . $e->getMessage());
+            $response->send();
+        }
     }
 
     public function logout(Request $request, Response $response): void{

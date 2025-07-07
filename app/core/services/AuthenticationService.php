@@ -2,22 +2,36 @@
 
 namespace app\core\services;
 
-use app\core\models\dao\EmpleadoDao;
-use app\core\models\dao\UsuarioDao;
-use app\core\models\dto\LoginDto;
 use app\libs\database\Connection;
-use app\libs\password\Password;
 
 final class AuthenticationService{
-    public function login(LoginDto $login): void{
+    public function login(array $object): void{
     
         $conn = Connection::get();
 
-        //* Autenticación del usuario
-        $usuarioDao = new UsuarioDao($conn);
-        $usuario = $usuarioDao->login($login->getUserName());
+        $account = $object["account"];
+        $password = $object["password"];
 
-        if(!password_verify($login->getPassword(), $usuario["clave"])){
+        if ($account === "" || $password === "") {
+            throw new \Exception("El nombre de usuario o la contraseña no coinciden");
+        }
+        
+        $sql = "SELECT id, apellido, nombres, cuenta, perfil, clave, correo, estado, resetPass";
+        $sql .= " FROM usuarios";
+        $sql .= " WHERE (cuenta = :account OR correo = :account)";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute(["account" => $account]);
+
+        //* Validaciones de la cuenta
+        if($stmt->rowCount() != 1){
+            throw new \Exception("El nombre de usuario o la contraseña no coinciden");
+        }
+
+        $usuario = $stmt->fetch(\PDO::FETCH_ASSOC); //Se obtiene el usuario
+
+        if(!password_verify($password, $usuario["clave"])){
             throw new \Exception("El usuario o la clave es incorrecta.");
         }
         if($usuario["estado"] !== 1){
