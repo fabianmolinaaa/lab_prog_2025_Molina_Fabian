@@ -1,24 +1,22 @@
+
 import { itemController } from "./controller.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    /*
-     * Obtiene el ID del item desde la URL
-     ? Antes usaba esto porque usaba URL relativas.
-     ! const id = new URLSearchParams(window.location.search).get("id");
-    */
+document.addEventListener("DOMContentLoaded", async () => {
     
     const urlParts = window.location.pathname.split('/');
     const id = urlParts[urlParts.length - 1];
 
     //* Asigna el item a la variable item
-    const item = itemController.load(id);
+    const item = await itemController.load(id);
+    const itemData = item.result;
+        
     
     //* Llenar los campos del formulario
-    document.getElementById("name").value = item.name;
-    document.getElementById("price").value = item.price;
-    document.getElementById("stock").value = item.stock;
-    document.getElementById("category").value = item.category;
-    document.getElementById("description").value = item.description;
+    document.getElementById("name").value = itemData.nombre;
+    document.getElementById("price").value = itemData.precio;
+    document.getElementById("stock").value = itemData.stock;
+    document.getElementById("category").value = itemData.categoria;
+    document.getElementById("description").value = itemData.descripcion;
 
     //* Funcionalidad de los botones */
 

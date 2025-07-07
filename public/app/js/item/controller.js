@@ -1,4 +1,6 @@
 import { itemService } from "./service.js";
+import * as jspdf from "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+import * as jspdfAutotable from "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js";
 
 //* Referencia a la tabla de usuarios
 const tbodyItem = document.getElementById("tbodyItem");
@@ -42,7 +44,7 @@ const assignBtnEvents = () => {
     // Asignar funcionalidad a los botones de eliminar
     const btnEliminarItem = document.querySelectorAll(".btn-danger");
     btnEliminarItem.forEach(btn => {
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", async (e) => {
             e.preventDefault();
             const itemId = e.target.dataset.id;
             
@@ -53,7 +55,7 @@ const assignBtnEvents = () => {
             
             if (confirm("¿Está seguro de que desea eliminar este item?")) {
                 try {
-                    itemController.delete(itemId);
+                    await itemController.delete(itemId);
                 } catch (error) {
                     console.error(error);
                     if (error.message === "ID de item inválido") {
@@ -72,7 +74,7 @@ let currentItemId = null;
 
 export const itemController = {
     //* Solicita al servicio una cuenta existente y lo muestra en la vista
-    load: id => {
+    load: async id => {
         // Almacenar el ID del usuario
         currentItemId = id;
         if (!currentItemId) {
@@ -87,7 +89,7 @@ export const itemController = {
                 throw new Error("ID de item inválido");
             }
             
-            const item = itemService.load(itemId);
+            const item = await itemService.load(itemId);
             if (!item) {
                 throw new Error("Item no encontrado");
             }
@@ -162,7 +164,7 @@ export const itemController = {
         }
     },
     //* Solicita al servicio eliminar un item existente y actualizar la vista
-    delete: id => {
+    delete: async id => {
         try {
             // Validar que el ID sea un número válido
             const itemId = parseInt(id);
@@ -170,13 +172,13 @@ export const itemController = {
                 throw new Error("ID de item inválido");
             }
             
-            const success = itemService.delete(itemId);
+            const success = await itemService.delete(itemId);
             if (!success) {
                 throw new Error("No se pudo eliminar el item");
             }
             
             // Actualizar la vista
-            updateTable(itemService.list());
+            updateTable(await itemService.list());
             alert("Item eliminado exitosamente");
             return true;
         } catch (error) {
@@ -195,71 +197,62 @@ export const itemController = {
         }
     },
     //* Genera un archivo PDF
-    exportToPDF: () => {
-        // Verificar si jsPDF está disponible
-        if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-            alert("Error: La biblioteca jsPDF no está cargada correctamente. Por favor, recargue la página.");
-            console.error('jsPDF no está disponible');
-            return;
-        }
-
-        // Genera un archivo PDF
-        const doc = new window.jspdf.jsPDF();
-
-        // Verificar si el documento se creó correctamente
-        if (!doc) {
-            alert("Error: No se pudo crear el documento PDF");
-            console.error('No se pudo crear el documento PDF');
-            return;
-        }
-
-        // Obtener los datos del formulario
-        const itemData = {
-            nombre: document.getElementById("nombre").value,
-            precio: document.getElementById("precio").value,
-            stock: document.getElementById("stock").value,
-            categoria: document.getElementById("categoria").value,
-            descripcion: document.getElementById("descripcion").value,
-        };
-
-        // Verificar si todos los datos están presentes
-        if (!itemData.nombre || !itemData.precio || !itemData.stock || !itemData.categoria || !itemData.descripcion) {
-            alert("Error: No se pudieron obtener los datos del formulario");
-            return;
-        }
-
-        // Titulo del documento
-        doc.setFontSize(16);
-        doc.text("Datos del Item", 105, 20, { align: 'center' });
-
-        // Generar la tabla con los datos del usuario
-        doc.autoTable({
-            head: [["Campo", "Valor"]],
-            body: [
-                ["Nombre", itemData.nombre],
-                ["Precio", itemData.precio],
-                ["Stock", itemData.stock],
-                ["Categoria", itemData.categoria],
-                ["Descripcion", itemData.descripcion],
-            ],
-            styles: {
-                fontSize: 10,
-                cellPadding: 2,
-                halign: 'left'
-            },
-            headStyles: {
-                fillColor: [76, 175, 80],
-                textColor: 255,
-                fontStyle: 'bold'
+    exportToPDF: async () => {
+        try {
+            // Obtener los datos de los items
+            const items = await itemService.list();
+            
+            // Verificar si jsPDF está disponible
+            if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                throw new Error("La biblioteca jsPDF no está cargada correctamente");
             }
-        });
 
-        // Fecha de Generación
-        doc.setFontSize(10);
-        doc.text("Fecha de generación: " + new Date().toLocaleDateString(), 105, 280, { align: 'center' });
+            // Crear un nuevo documento PDF
+            const doc = new window.jspdf.jsPDF();
 
-        // Guardar el PDF con el nombre del Item
-        doc.save(`${itemData.nombre}.pdf`);
+            // Agregar título
+            doc.setFontSize(16);
+            doc.text("Listado de Items", 10, 10);
+
+            // Definir columnas para la tabla
+            const columns = [
+                { header: 'Código', dataKey: 'codigo' },
+                { header: 'Nombre', dataKey: 'nombre' },
+                { header: 'Descripción', dataKey: 'descripcion' },
+                { header: 'Categoría', dataKey: 'categoriaId' },
+                { header: 'Precio', dataKey: 'precio' },
+                { header: 'Stock', dataKey: 'stock' }
+            ];
+
+            // Formatear los datos para la tabla
+            const rows = items.map(item => ({
+                ...item,
+                precio: `$${item.precio}`
+            }));
+
+            // Generar la tabla
+            doc.autoTable({
+                columns,
+                body: rows,
+                startY: 20,
+                theme: 'grid',
+                headStyles: {
+                    fillColor: [41, 41, 41],
+                    textColor: 255
+                },
+                styles: {
+                    fontSize: 9,
+                    cellPadding: 2
+                }
+            });
+
+            // Guardar el PDF
+            doc.save('listado-items.pdf');
+
+        } catch (error) {
+            console.error("Error al generar el PDF:", error);
+            alert("Error al generar el PDF: " + error.message);
+        }
     },
     //* Resetea el formulario con los datos originales del usuario
     resetForm: () => {

@@ -1,1 +1,2 @@
-<h1>Seccion de Cierre de Sesión</h1>
+<h1>Sesión cerrada</h1>
+<h3>Espere...</h3>

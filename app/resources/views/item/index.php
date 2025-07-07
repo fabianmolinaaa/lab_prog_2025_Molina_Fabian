@@ -35,7 +35,7 @@
     </div>
     <div class="user-buttons">
         <a class="btn btn-success" href="/lab_prog_2025_Molina_Fabian/public/item/create" role="button">Alta Evento</a>
-        <a class="btn btn-secondary" href="javascript:void(0)" role="button">Exportar listado</a>
+        <button id="btnExportarPDF" type="button" class="btn btn-secondary">Exportar listado</button>
     </div>
 </div>
 <div class="table-container">

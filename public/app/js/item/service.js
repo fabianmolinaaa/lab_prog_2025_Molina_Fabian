@@ -3,9 +3,22 @@ const API_BASE_URL = "item/";
 //* Exportar el servicio
 export const itemService = {
     //* Devuelve el item que se corresponda con el identificador
-    load: id => {
-        const pos = items.findIndex(item => item.id === parseInt(id))
-        return items[pos] // Devuelve un objeto item 
+    load: async id => {
+        try {
+            const response = await fetch(`${API_BASE_URL}load/${id}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Error al cargar item con ID: ${id}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error en la petición", error);
+            throw error;
+        }
     },
     //* Guarda un nuevo item
     save: async item => {
@@ -51,7 +64,12 @@ export const itemService = {
     delete: async id => {
         try {
             const response = await fetch(`${API_BASE_URL}delete/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({ id })
             })
             if (!response.ok) {
                 throw new Error("Error al eliminar item");

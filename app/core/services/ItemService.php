@@ -12,7 +12,7 @@ final class ItemService implements InterfaceService{
     
     public function load(int $id): InterfaceDto{
         $dao = new ItemDao(Connection::get());
-        return new ItemDto($dao->load($id));
+        return $dao->load($id);
     }
 
     public function save(InterfaceDto $dto): void{
