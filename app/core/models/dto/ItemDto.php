@@ -13,7 +13,7 @@ final class ItemDto implements InterfaceDto{
         $this->setNombre($data["nombre"] ?? "");
         $this->setCodigo($data["codigo"] ?? "");
         $this->setDescripcion($data["descripcion"] ?? "");
-        $this->setCategoriaId($data["categoria_id"] ?? 0);
+        $this->setCategoriaId($data["categoriaId"] ?? 0);
         $this->setPrecio($data["precio"] ?? 0);
         $this->setStock($data["stock"] ?? 0);
     }
@@ -72,7 +72,7 @@ final class ItemDto implements InterfaceDto{
     }
 
     public function setStock(int $stock): void{
-        $this->stock = $stock >= 0 && $stock <= 999999 ? $stock : 0; //Si stock es mayor a 0, se asigna, caso contrario se asigna 0
+        $this->stock = $stock >= 0 && $stock <= 9999999 ? $stock : 0; //Si stock es mayor a 0, se asigna, caso contrario se asigna 0
     }
 
 
@@ -82,7 +82,7 @@ final class ItemDto implements InterfaceDto{
             "nombre"        => $this->getNombre(),
             "codigo"        => $this->getCodigo(),
             "descripcion"   => $this->getDescripcion(),
-            "categoria_id"  => $this->getCategoriaId(),
+            "categoriaId"   => $this->getCategoriaId(),
             "precio"        => $this->getPrecio(),
             "stock"         => $this->getStock()
         ];

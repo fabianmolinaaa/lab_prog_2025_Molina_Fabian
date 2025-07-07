@@ -46,7 +46,6 @@ final class ItemDao extends BaseDao implements InterfaceDao{
         $sql = "INSERT INTO {$this->table} VALUES(DEFAULT, :nombre, :codigo, :descripcion, :categoriaId, :precio, :stock)";
         $stmt = $this->connection->prepare($sql);
         $data = $object->toArray();
-        unset($data["id"]);
         $stmt->execute([
             ':nombre' => $data['nombre'] ?? null,
             ':codigo' => $data['codigo'] ?? null,

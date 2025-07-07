@@ -17,10 +17,8 @@ final class ItemService implements InterfaceService{
 
     public function save(InterfaceDto $dto): void{
         $this->validate($dto);
-        $data = $dto->toArray();
-        unset($data["id"]);
         $dao = new ItemDao(Connection::get());
-        $dao->save($data);
+        $dao->save($dto);
     }
 
     public function update(InterfaceDto $dto): void{
@@ -40,6 +38,9 @@ final class ItemService implements InterfaceService{
     private function validate(ItemDto $dto): void{
         if($dto->getNombre() == ""){
             throw new \Exception("<p>El <strong>nombre</strong> del item es obligatorio.</p>");
+        }
+        if($dto->getCategoriaId() <= 0) {
+            throw new \Exception("Debe seleccionar una categoría válida");
         }
     }
 

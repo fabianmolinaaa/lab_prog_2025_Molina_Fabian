@@ -8,9 +8,23 @@ export const itemService = {
         return items[pos] // Devuelve un objeto item 
     },
     //* Guarda un nuevo item
-    save: item => {
-        item.id = items.length + 1; 
-        items.push(item);
+    save: async item => {
+        try {
+            const response = await fetch(`${API_BASE_URL}save`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(item)
+            })
+            if (!response.ok) {
+                throw new Error("Error al guardar item");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error en la petición", error);
+            throw error;
+        }
     },
     //* Actualiza un item
     update: (id, itemData) => {
@@ -34,14 +48,15 @@ export const itemService = {
         return items[itemIndex];
     },
     //* Elimina un item existente
-    delete: id => {
+    delete: async id => {
         try {
-            const index = items.findIndex(item => item.id === parseInt(id));
-            if (index !== -1) {
-                items.splice(index, 1); // Elimina el item del array en ese índice
-                return true;
+            const response = await fetch(`${API_BASE_URL}delete/${id}`, {
+                method: "DELETE"
+            })
+            if (!response.ok) {
+                throw new Error("Error al eliminar item");
             }
-            return false; // No se encontró el item
+            return response.ok;
         } catch (error) {
             console.error("Error al eliminar item:", error);
             throw error;

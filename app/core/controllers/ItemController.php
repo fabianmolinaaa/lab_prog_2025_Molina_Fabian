@@ -18,6 +18,20 @@ final class ItemController extends BaseController implements InterfaceController
         require_once APP_FILE_TEMPLATE;
     }
 
+    public function create(Request $request, Response $response): void{
+        array_push($this->scripts, "app/js/item/create.js");
+        array_push($this->styles, "app/css/item/create.css");
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
+    }
+
+    public function edit(Request $request, Response $response): void{
+        array_push($this->scripts, "app/js/item/edit.js");
+        array_push($this->styles, "app/css/item/edit.css");
+        $this->setCurrentView($request);
+        require_once APP_FILE_TEMPLATE;
+    }
+
     public function load(Request $request, Response $response): void{
         $service = new ItemService();
         $dto = $service->load((int)$request->getId());
@@ -25,21 +39,17 @@ final class ItemController extends BaseController implements InterfaceController
         $response->send();
     }
 
-    public function create(Request $request, Response $response): void{
-
-    }
-
     public function save(Request $request, Response $response): void{
-        $dto = new ItemDto($request->getDataFromInput()); 
-        $service = new ItemService();
-        $service->save($dto);
-        
-        $response->setMessage("<p>Se agregó un nuevo item al sistema.</p>");
-        $response->send();
-    }
-
-    public function edit(Request $request, Response $response): void{
-
+        try {
+            $dto = new ItemDto($request->getDataFromInput()); 
+            $service = new ItemService();
+            $service->save($dto);
+            $response->setMessage("<p>Se guardó un nuevo item al sistema.</p>");
+            $response->send();
+        } catch (\Exception $e) {
+            $response->setMessage("<p>Hubo un error al guardar el item.</p>");
+            $response->send();
+        }
     }
 
     public function update(Request $request, Response $response): void{

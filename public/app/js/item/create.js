@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCancelarItem = document.getElementById("btnCancelarItem");
     btnCancelarItem.addEventListener("click", (e) => {
         e.preventDefault(); // Evita la validación del formulario
-        window.location.href = "index.html";
+        window.location.href = "home";
     });
 
 });

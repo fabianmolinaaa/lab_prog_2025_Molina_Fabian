@@ -14,15 +14,15 @@
                 <p>Por favor, complete los siguientes campos:</p>
             </div>
             <form id="formItem" action="" autocomplete="off">
-                <input id="name" type="text" placeholder="Nombre" required>
-                <input id="price" type="number" placeholder="Precio" min="0" max="100000000" required>
-                <select id="category" name="category" required>
+                <input id="nombre" type="text" placeholder="Nombre" required>
+                <input id="precio" type="number" placeholder="Precio" min="0" max="9999999" required>
+                <select id="categoria" name="categoria" required>
                     <option value="" disabled selected>Categoria</option>
-                    <option value="presencial">Presencial</option>
-                    <option value="online">Online</option>
+                    <option value="1">Presencial</option>
+                    <option value="2">Online</option>
                 </select>
-                <input id="stock" type="number" placeholder="Cantidad de Entradas" min="0" max="5000" required>
-                <textarea id="description" name="description" placeholder="Descripción" required></textarea>
+                <input id="stock" type="number" placeholder="Cantidad de Entradas" min="0" max="9999999" required>
+                <textarea id="descripcion" name="descripcion" placeholder="Descripción" required></textarea>
                 <div class="botones-container">
                     <button id="btnCancelarItem" class="btn btn-danger" type="button">Cancelar</button>
                     <button id="btnGuardarItem" class="btn btn-success" type="submit">Guardar</button>

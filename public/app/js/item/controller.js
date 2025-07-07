@@ -110,12 +110,13 @@ export const itemController = {
 
         // Capturo los datos 
         const itemData = {
-            name: formItem.name.value.trim(),
-            price: formItem.price.value.trim(),
+            nombre: formItem.nombre.value.trim(),
+            precio: formItem.precio.value.trim(),
             stock: formItem.stock.value.trim(),
-            category: formItem.category.value,
-            description: formItem.description.value.trim()
-        }
+            categoriaId: formItem.categoria.value,
+            descripcion: formItem.descripcion.value.trim(),
+            codigo: "EVNT-" + Math.floor(Math.random() * 10000) // Generar código aleatorio
+        };
 
         // Llamo al servicio
         try {
@@ -138,20 +139,20 @@ export const itemController = {
 
         // Obtener datos del formulario
         const itemData = {
-            name: document.getElementById("name").value,
-            price: document.getElementById("price").value,
+            nombre: document.getElementById("nombre").value,
+            precio: document.getElementById("precio").value,
             stock: document.getElementById("stock").value,
-            category: document.getElementById("category").value,
-            description: document.getElementById("description").value
+            categoria: document.getElementById("categoria").value,
+            descripcion: document.getElementById("descripcion").value
         };
 
         // Validar campos
-        if (itemData.name === "" || itemData.price === "" || itemData.stock === "" || itemData.category === "" || itemData.description === "") {
+        if (itemData.nombre === "" || itemData.precio === "" || itemData.stock === "" || itemData.categoria === "" || itemData.descripcion === "") {
             alert("Por favor, complete todos los campos");
             return;
         }
 
-        // Actualizar usuario
+        // Actualizar item
         try {
             itemService.update(id, itemData);
             alert("Item actualizado exitosamente");
@@ -160,7 +161,7 @@ export const itemController = {
             alert("Error al actualizar el item");
         }
     },
-    //* Solicita al servicio eliminar una cuenta existente y actualizar la vista
+    //* Solicita al servicio eliminar un item existente y actualizar la vista
     delete: id => {
         try {
             // Validar que el ID sea un número válido
@@ -214,15 +215,15 @@ export const itemController = {
 
         // Obtener los datos del formulario
         const itemData = {
-            name: document.getElementById("name").value,
-            price: document.getElementById("price").value,
+            nombre: document.getElementById("nombre").value,
+            precio: document.getElementById("precio").value,
             stock: document.getElementById("stock").value,
-            category: document.getElementById("category").value,
-            description: document.getElementById("description").value,
+            categoria: document.getElementById("categoria").value,
+            descripcion: document.getElementById("descripcion").value,
         };
 
         // Verificar si todos los datos están presentes
-        if (!itemData.name || !itemData.price || !itemData.stock || !itemData.category || !itemData.description) {
+        if (!itemData.nombre || !itemData.precio || !itemData.stock || !itemData.categoria || !itemData.descripcion) {
             alert("Error: No se pudieron obtener los datos del formulario");
             return;
         }
@@ -235,11 +236,11 @@ export const itemController = {
         doc.autoTable({
             head: [["Campo", "Valor"]],
             body: [
-                ["Nombre", itemData.name],
-                ["Precio", itemData.price],
+                ["Nombre", itemData.nombre],
+                ["Precio", itemData.precio],
                 ["Stock", itemData.stock],
-                ["Categoria", itemData.category],
-                ["Descripcion", itemData.description],
+                ["Categoria", itemData.categoria],
+                ["Descripcion", itemData.descripcion],
             ],
             styles: {
                 fontSize: 10,
@@ -258,7 +259,7 @@ export const itemController = {
         doc.text("Fecha de generación: " + new Date().toLocaleDateString(), 105, 280, { align: 'center' });
 
         // Guardar el PDF con el nombre del Item
-        doc.save(`${itemData.name}.pdf`);
+        doc.save(`${itemData.nombre}.pdf`);
     },
     //* Resetea el formulario con los datos originales del usuario
     resetForm: () => {
@@ -275,26 +276,26 @@ export const itemController = {
         }
 
         // Restaurar los valores originales
-        document.getElementById("name").value = item.name;
-        document.getElementById("price").value = item.price;
-        document.getElementById("category").value = item.category;
+        document.getElementById("nombre").value = item.nombre;
+        document.getElementById("precio").value = item.precio;
+        document.getElementById("categoria").value = item.categoria;
         document.getElementById("stock").value = item.stock;
-        document.getElementById("description").value = item.description;
+        document.getElementById("descripcion").value = item.descripcion;
     },
     //* Habilita o deshabilita todos los controles del formulario de la vista
     enableForm: (boolean) => {
         if (boolean) {
-            document.getElementById("name").removeAttribute("disabled");
-            document.getElementById("price").removeAttribute("disabled");
-            document.getElementById("category").removeAttribute("disabled");
+            document.getElementById("nombre").removeAttribute("disabled");
+            document.getElementById("precio").removeAttribute("disabled");
+            document.getElementById("categoria").removeAttribute("disabled");
             document.getElementById("stock").removeAttribute("disabled");
-            document.getElementById("description").removeAttribute("disabled");
+            document.getElementById("descripcion").removeAttribute("disabled");
         } else {
-            document.getElementById("name").setAttribute("disabled", "disabled");
-            document.getElementById("price").setAttribute("disabled", "disabled");
-            document.getElementById("category").setAttribute("disabled", "disabled");
+            document.getElementById("nombre").setAttribute("disabled", "disabled");
+            document.getElementById("precio").setAttribute("disabled", "disabled");
+            document.getElementById("categoria").setAttribute("disabled", "disabled");
             document.getElementById("stock").setAttribute("disabled", "disabled");
-            document.getElementById("description").setAttribute("disabled", "disabled");
+            document.getElementById("descripcion").setAttribute("disabled", "disabled");
         }
     }
 }
