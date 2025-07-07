@@ -6,15 +6,19 @@
 }
 
 body {
-    background-image: url("../../../../lab_prog_2025_Molina_Fabian/public/app/assets/images/travis-fondo.jpg");
+    background-image: url("/lab_prog_2025_Molina_Fabian/public/app/assets/images/travis-fondo.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    display: flex; /* Temporal */
+    flex-direction: column; /* Temporal */
+    height: 100vh; /* Temporal */
 }
 
 main {
     padding: 20px;
+    flex: 1; /* Temporal */
 }
 
 #seccion-principal {

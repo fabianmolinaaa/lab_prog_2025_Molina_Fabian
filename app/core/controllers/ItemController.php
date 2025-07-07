@@ -13,6 +13,7 @@ final class ItemController extends BaseController implements InterfaceController
 
     public function index(Request $request, Response $response): void{
         array_push($this->scripts, "app/js/item/index.js");
+        array_push($this->styles, "app/css/item/index.css");
         $this->setCurrentView($request);
         require_once APP_FILE_TEMPLATE;
     }
